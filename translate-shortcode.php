@@ -10,12 +10,19 @@ Author URI: http://alexandresehnem.com.br
 if (!is_admin()) {
 
 	function translate_shortcode($attrs, $content) {
+		$response = '';
 
 		if (isset($attrs['context'])) {
-			return __(html_entity_decode($content), $attrs['context']);
+			$response = __(html_entity_decode($content), $attrs['context']);
 		} else {
-			return __(html_entity_decode($content));
+			$response = __(html_entity_decode($content));
 		}
+
+		if (isset($attrs['wrapper'])) {
+			$response = sprintf('<%s>%s</%s>', $attrs['wrapper'], $response, $attrs['wrapper']);
+		}
+
+		return $response;
 	}
 	add_shortcode('translate', 'translate_shortcode');
 }
